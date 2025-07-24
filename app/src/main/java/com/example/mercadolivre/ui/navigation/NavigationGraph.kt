@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.mercadolivre.ui.HomeScreen
+import com.example.mercadolivre.ui.screen.home.HomeScreen
+import com.example.mercadolivre.ui.screen.home.HomeViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
@@ -13,6 +15,7 @@ fun NavigationGraph(navController: NavHostController) {
         startDestination = Screens.Home.route
     ) {
         composable(route = Screens.Home.route) {
+            val viewModel: HomeViewModel = hiltViewModel()
             HomeScreen()
         }
     }

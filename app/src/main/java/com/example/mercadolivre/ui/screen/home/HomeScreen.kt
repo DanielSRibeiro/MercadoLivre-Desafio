@@ -1,4 +1,4 @@
-package com.example.mercadolivre.ui
+package com.example.mercadolivre.ui.screen.home
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

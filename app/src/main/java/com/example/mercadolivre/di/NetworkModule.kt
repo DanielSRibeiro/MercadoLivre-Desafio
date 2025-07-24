@@ -1,8 +1,9 @@
 package com.example.mercadolivre.di
 
 import com.example.mercadolivre.BuildConfig
-import com.example.mercadolivre.data.remote.MLService
-import com.example.mercadolivre.data.remote.ParamsInterceptor
+import com.example.mercadolivre.data.remote.AccessTokenService
+import com.example.mercadolivre.data.remote.interceptor.AccessTokenInterceptor
+import com.example.mercadolivre.util.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,8 +21,8 @@ object NetworkModule {
     private const val TIMEOUT_SECONDS = 15L
 
     @Provides
-    fun provideParamsInterceptor(): ParamsInterceptor {
-        return ParamsInterceptor()
+    fun provideAccessTokenInterceptor(): AccessTokenInterceptor {
+        return AccessTokenInterceptor()
     }
 
     @Provides
@@ -37,11 +38,11 @@ object NetworkModule {
 
     @Provides
     fun provideOkHttpClient(
-        paramsInterceptor: ParamsInterceptor,
+        accessTokenInterceptor: AccessTokenInterceptor,
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(paramsInterceptor)
+            .addInterceptor(accessTokenInterceptor)
             .addInterceptor(loggingInterceptor)
             .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -57,12 +58,12 @@ object NetworkModule {
     fun provideService(
         gsonConverterFactory: GsonConverterFactory,
         okHttpClient: OkHttpClient
-    ): MLService {
+    ): AccessTokenService {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(gsonConverterFactory)
             .client(okHttpClient)
             .build()
-            .create(MLService::class.java)
+            .create(AccessTokenService::class.java)
     }
 }

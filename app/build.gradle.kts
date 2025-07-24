@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp")
+    id ("kotlin-kapt")
+//    id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     kotlin("plugin.serialization") version "2.0.21"
 }
@@ -43,9 +44,13 @@ android {
         buildConfig = true
         compose = true
     }
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
+    implementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -69,23 +74,19 @@ dependencies {
     // Splashscreen
     implementation(libs.androidx.core.splashscreen)
 
-    //Retrofit and Gson
-    implementation(libs.retrofit)
-    implementation(libs.retrofit2.converter.gson)
-
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
 
     // Dagger hilt
     implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     //Coin and Icons
     implementation(libs.coil.kt.coil.compose)
     implementation(libs.androidx.material.icons.extended)
 
-    //OkHttp
-    implementation(libs.okhttp)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.logging.interceptor)
+    //Encrypted
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
 }
