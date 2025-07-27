@@ -1,4 +1,4 @@
-package com.example.mercadolivre.data.local
+package com.example.mercadolivre.data.repository
 
 import com.example.core.data.local.AccessTokenDataSource
 import com.example.core.data.local.AccessTokenRepository
@@ -9,11 +9,11 @@ class AccessTokenRepositoryImpl @Inject constructor(
     private val dataSource: AccessTokenDataSource
 ) : AccessTokenRepository {
 
-    override suspend fun saveToken(token: AccessToken) {
+    override fun saveToken(token: AccessToken) {
         dataSource.saveToken(token)
     }
 
-    override suspend fun getToken(): AccessToken? {
+    override fun getToken(): AccessToken? {
         return dataSource.getToken()
     }
 }

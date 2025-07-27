@@ -8,11 +8,14 @@ object Constants {
     const val TG_TOKEN = "TG-688172645824e500014b79e6-822554023"
 
     const val AUTHORIZATION_PARAM = "Authorization"
+    const val SITE_ID_PARAM = "SITE_ID"
+    const val SITE_ID_VALUE = "MLB"
     const val ACCEPT_PARAM = "accept"
     const val CONTENT_TYPE_PARAM = "content-type"
 
     const val ACCEPT_VALUE = "application/json"
     const val CONTENT_TYPE_VALUE = "application/x-www-form-urlencoded"
     const val REFRESH_TOKEN = "refresh_token"
-    const val AUTHORIZATION_TOKEN = "authorization_code"
+    const val DATABASE_NAME = "ml_db"
+    const val SEARCH_RESULT_ARGUMENT_KEY = "search_result_argument_key"
 }

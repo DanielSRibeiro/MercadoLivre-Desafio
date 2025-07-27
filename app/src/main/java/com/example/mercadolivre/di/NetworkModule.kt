@@ -1,8 +1,13 @@
 package com.example.mercadolivre.di
 
+import com.example.core.domain.usecase.GetTokenUseCase
 import com.example.mercadolivre.BuildConfig
-import com.example.mercadolivre.data.remote.AccessTokenService
+import com.example.mercadolivre.data.remote.service.AccessTokenService
 import com.example.mercadolivre.data.remote.interceptor.AccessTokenInterceptor
+import com.example.mercadolivre.data.remote.interceptor.MLInterceptor
+import com.example.mercadolivre.data.remote.service.MLService
+import com.example.mercadolivre.di.qualifier.AccessClient
+import com.example.mercadolivre.di.qualifier.MLClient
 import com.example.mercadolivre.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -26,6 +31,13 @@ object NetworkModule {
     }
 
     @Provides
+    fun provideMLInterceptor(
+        getTokenUseCase: GetTokenUseCase
+    ): MLInterceptor {
+        return MLInterceptor(getTokenUseCase)
+    }
+
+    @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
             setLevel(
@@ -37,12 +49,27 @@ object NetworkModule {
     }
 
     @Provides
+    @AccessClient
     fun provideOkHttpClient(
         accessTokenInterceptor: AccessTokenInterceptor,
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(accessTokenInterceptor)
+            .addInterceptor(loggingInterceptor)
+            .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Provides
+    @MLClient
+    fun provideMLOkHttpClient(
+        mLInterceptor: MLInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(mLInterceptor)
             .addInterceptor(loggingInterceptor)
             .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -57,7 +84,7 @@ object NetworkModule {
     @Provides
     fun provideService(
         gsonConverterFactory: GsonConverterFactory,
-        okHttpClient: OkHttpClient
+        @AccessClient okHttpClient: OkHttpClient
     ): AccessTokenService {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
@@ -65,5 +92,18 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
             .create(AccessTokenService::class.java)
+    }
+
+    @Provides
+    fun provideMLService(
+        gsonConverterFactory: GsonConverterFactory,
+        @MLClient okHttpClient: OkHttpClient
+    ): MLService {
+        return Retrofit.Builder()
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(gsonConverterFactory)
+            .client(okHttpClient)
+            .build()
+            .create(MLService::class.java)
     }
 }

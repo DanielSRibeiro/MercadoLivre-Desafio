@@ -1,9 +1,10 @@
-package com.example.mercadolivre.data.remote
+package com.example.mercadolivre.data.datasource
 
 import com.example.core.data.remote.AccessTokenRemoteDataSource
 import com.example.core.domain.ErrorStates
 import com.example.core.domain.model.AccessToken
 import com.example.core.domain.usecase.base.ResultStatus
+import com.example.mercadolivre.data.remote.service.AccessTokenService
 import com.example.mercadolivre.data.remote.request.AccessTokenRequest
 import com.example.mercadolivre.data.remote.response.toRefreshToken
 import com.example.mercadolivre.util.Constants

@@ -1,4 +1,4 @@
-package com.example.mercadolivre.data.remote
+package com.example.mercadolivre.data.repository
 
 import com.example.core.data.remote.AccessTokenRemoteDataSource
 import com.example.core.domain.model.AccessToken

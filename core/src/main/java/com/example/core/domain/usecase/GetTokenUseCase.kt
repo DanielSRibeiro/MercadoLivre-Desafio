@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 interface GetTokenUseCase {
-    suspend operator fun invoke(): AccessToken?
+    operator fun invoke(): AccessToken?
 }
 
 class GetTokenUseCaseImpl @Inject constructor(
     private val repository: AccessTokenRepository
 ) : GetTokenUseCase {
 
-    override suspend fun invoke(): AccessToken? {
+    override fun invoke(): AccessToken? {
         return repository.getToken()
     }
 }

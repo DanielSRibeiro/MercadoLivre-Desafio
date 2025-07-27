@@ -1,31 +1,37 @@
 package com.example.mercadolivre.ui.screen.home
 
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.mercadolivre.ui.theme.MercadoLivreTheme
+import androidx.compose.ui.unit.dp
+import com.example.mercadolivre.ui.screen.home.components.CardProducts
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    Greeting(
-        name = "Android",
-        modifier = modifier
-    )
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MercadoLivreTheme {
-        Greeting("Android")
+fun HomeScreen(
+    uiState: HomeState,
+    onNavigateToDetail: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState()),
+    ) {
+        CardProducts(
+            modifier = Modifier,
+            product = uiState.lastSeenProducts,
+            onNavigateToDetail = onNavigateToDetail
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        CardProducts(
+            modifier = Modifier,
+            title = "Favoritos",
+            product = uiState.favoritesProducts,
+            onNavigateToDetail = onNavigateToDetail
+        )
     }
 }

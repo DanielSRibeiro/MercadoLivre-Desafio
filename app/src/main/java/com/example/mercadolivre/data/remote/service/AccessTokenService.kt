@@ -1,4 +1,4 @@
-package com.example.mercadolivre.data.remote
+package com.example.mercadolivre.data.remote.service
 
 import com.example.mercadolivre.data.remote.request.AccessTokenRequest
 import com.example.mercadolivre.data.remote.response.AccessTokenResponse

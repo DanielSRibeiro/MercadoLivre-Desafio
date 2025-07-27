@@ -1,7 +1,5 @@
 package com.example.mercadolivre.data.remote.response
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.core.domain.model.AccessToken
 import com.google.gson.annotations.SerializedName
 import java.time.Instant
@@ -15,7 +13,6 @@ data class AccessTokenResponse(
     @SerializedName("refresh_token") val refreshToken: String
 )
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun AccessTokenResponse.toRefreshToken() : AccessToken {
     val timeExpiresAt = Instant.now().plusSeconds(this.expiresIn.toLong())
 

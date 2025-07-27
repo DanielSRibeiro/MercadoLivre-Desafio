@@ -1,4 +1,4 @@
-package com.example.mercadolivre.data.local
+package com.example.mercadolivre.data.repository
 
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -27,12 +27,12 @@ class AccessTokenDataSourceImpl @Inject constructor(
 
     private val gson = Gson()
 
-    override suspend fun saveToken(token: AccessToken) {
+    override fun saveToken(token: AccessToken) {
         val json = gson.toJson(token)
         prefs.edit().putString("access_token", json).apply()
     }
 
-    override suspend fun getToken(): AccessToken? {
+    override fun getToken(): AccessToken? {
         val json = prefs.getString("access_token", null) ?: return null
         return gson.fromJson(json, AccessToken::class.java)
     }
