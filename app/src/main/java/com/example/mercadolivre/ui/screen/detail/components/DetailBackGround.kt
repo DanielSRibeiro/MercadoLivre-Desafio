@@ -21,12 +21,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.example.core.domain.model.Picture
 import com.example.mercadolivre.ui.components.commo.AsyncImageUrl
 
 @Composable
 fun DetailBackGround(
     snackBarHostState: SnackbarHostState,
-    picturesList: List<String>,
+    picturesList: List<Picture>,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit
 ) {
@@ -43,7 +44,7 @@ fun DetailBackGround(
                 modifier = Modifier
                     .fillMaxSize(),
                 contentScale = ContentScale.Crop,
-                imageUrl = picturesList[page],
+                imageUrl = picturesList[page].url,
             )
 
         }

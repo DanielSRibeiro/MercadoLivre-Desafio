@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
 data class LastSeenEntity(
     @PrimaryKey(autoGenerate = false)
     val id: String,
-    val title: String,
-    val description: String,
-    val price: Double,
-    val basePrice: Double,
-    val thumbnail: String,
-    val pictures: List<PicturesEntity>
+    val name: String,
+    val pictures: List<PicturesEntity>,
+    val attribute: List<AttributeEntity>,
+    val keywords: String,
+    val total: Int,
+    val createdAt: Long = System.currentTimeMillis()
 )

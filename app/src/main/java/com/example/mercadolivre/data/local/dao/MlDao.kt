@@ -12,14 +12,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MlDao {
     //LastSeen
-    @Query("SELECT * FROM last_seen")
+    @Query("SELECT * FROM last_seen ORDER BY createdAt DESC")
     fun getLastSeen(): List<LastSeenEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addedInLastSeen(id: LastSeenEntity)
 
     //Favorite
-    @Query("SELECT * FROM product")
+    @Query("SELECT * FROM product ORDER BY createdAt DESC")
     fun getAllFavorites(): List<ProductEntity>
 
     @Query("SELECT * FROM product WHERE id = :id")

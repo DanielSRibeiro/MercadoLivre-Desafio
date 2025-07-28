@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.example.mercadolivre.R
 
 @Composable
 fun SearchComponent(
@@ -38,13 +40,13 @@ fun SearchComponent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Buscar Produtos",
+                text = stringResource(id = R.string.label_search),
                 color = Color.Gray,
                 style = MaterialTheme.typography.labelLarge
             )
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.description_search),
                 tint = Color.Black
             )
         }

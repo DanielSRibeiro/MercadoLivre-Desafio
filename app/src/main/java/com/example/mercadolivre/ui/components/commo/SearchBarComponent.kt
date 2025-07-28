@@ -10,6 +10,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import com.example.mercadolivre.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,15 +35,21 @@ fun SearchBarComponent(
                 onSearch = { onSearch(query) },
                 expanded = expanded,
                 onExpandedChange = {},
-                placeholder = { Text("Buscar produtos...") },
+                placeholder = { Text(text = stringResource(R.string.label_search)) },
                 leadingIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = stringResource(R.string.description_back)
+                        )
                     }
                 },
                 trailingIcon = {
                     IconButton(onClick = { onSearch(query) }) {
-                        Icon(Icons.Default.Search, contentDescription = "Buscar")
+                        Icon(
+                            Icons.Default.Search,
+                            contentDescription = stringResource(R.string.description_search)
+                        )
                     }
                 }
             )

@@ -18,4 +18,5 @@ object Constants {
     const val REFRESH_TOKEN = "refresh_token"
     const val DATABASE_NAME = "ml_db"
     const val SEARCH_RESULT_ARGUMENT_KEY = "search_result_argument_key"
+    const val DETAIL_ARGUMENT_KEY = "detail_argument_key"
 }

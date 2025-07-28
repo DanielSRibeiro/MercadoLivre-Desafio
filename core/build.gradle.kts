@@ -27,4 +27,7 @@ dependencies {
 
     // Coroutines core
     api(libs.kotlinx.coroutines.core)
+
+    // Paging3 Common
+    implementation(libs.androidx.paging.common)
 }

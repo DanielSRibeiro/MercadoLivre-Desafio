@@ -1,6 +1,5 @@
 package com.example.mercadolivre.ui.components.commo
 
-import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -14,15 +13,11 @@ fun AsyncImageUrl(
     contentScale: ContentScale,
     imageUrl: String,
     crossFadeEnabled: Boolean = true,
-//    @DrawableRes errorImage: Int = R.drawable.ic_error_image,
-//    @DrawableRes placeholderImage: Int = R.drawable.ic_placeholder,
 ) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(imageUrl)
             .crossfade(crossFadeEnabled)
-//            .error(errorImage)
-//            .placeholder(placeholderImage)
             .build(),
         contentDescription = "",
         contentScale = contentScale,

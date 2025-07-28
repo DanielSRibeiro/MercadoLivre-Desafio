@@ -1,15 +1,14 @@
 package com.example.core.data.local
 
-import com.example.core.domain.model.Product
-import kotlinx.coroutines.flow.Flow
+import com.example.core.domain.model.ProductResults
 
 interface FavoriteDataSource {
 
-    fun getAllFavorites(): List<Product>
+    fun getAllFavorites(): List<ProductResults>
 
-    suspend fun isFavorite(id: String): Product?
+    suspend fun isFavorite(id: String): ProductResults?
 
-    suspend fun addedInProduct(product: Product)
+    suspend fun addedInProduct(productResults: ProductResults)
 
-    suspend fun deleteProduct(product: Product)
+    suspend fun deleteProduct(productResults: ProductResults)
 }

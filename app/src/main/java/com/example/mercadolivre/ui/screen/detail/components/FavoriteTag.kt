@@ -9,21 +9,15 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.mercadolivre.ui.theme.black
+import com.example.mercadolivre.R
 import com.example.mercadolivre.ui.theme.white
 import kotlinx.coroutines.launch
 
@@ -35,6 +29,10 @@ fun FavoriteTag(
     onFavoriteClick: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
+    val message = if (isFavorite)
+        stringResource(R.string.label_delete_favorite)
+    else
+        stringResource(R.string.label_add_favorite)
     Box(
         modifier = modifier
             .padding(16.dp)
@@ -43,11 +41,10 @@ fun FavoriteTag(
         IconButton(
             onClick = {
                 scope.launch {
-                    snackBarHostState
-                        .showSnackbar(
-                            message = "Snackbar",
-                            duration = SnackbarDuration.Short
-                        )
+                    snackBarHostState.showSnackbar(
+                        message = message,
+                        duration = SnackbarDuration.Short
+                    )
                 }
                 onFavoriteClick()
             },
@@ -58,7 +55,7 @@ fun FavoriteTag(
                 if (isFavorite) Icons.Default.Favorite
                 else Icons.Default.FavoriteBorder,
                 tint = Color.Red,
-                contentDescription = "Favorite",
+                contentDescription = stringResource(R.string.label_favorites),
             )
         }
     }

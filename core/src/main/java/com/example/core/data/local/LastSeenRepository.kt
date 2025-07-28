@@ -1,9 +1,8 @@
 package com.example.core.data.local
 
-import com.example.core.domain.model.Product
-import kotlinx.coroutines.flow.Flow
+import com.example.core.domain.model.ProductResults
 
 interface LastSeenRepository {
-    suspend fun getLastSeen() : List<Product>
-    suspend fun addedInLastSeen(product: Product)
+    suspend fun getLastSeen() : List<ProductResults>
+    suspend fun addedInLastSeen(productResults: ProductResults)
 }

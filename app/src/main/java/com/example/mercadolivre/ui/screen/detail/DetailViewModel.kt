@@ -1,10 +1,7 @@
 package com.example.mercadolivre.ui.screen.detail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core.domain.model.PicturesResponse
-import com.example.core.domain.model.Product
 import com.example.core.domain.model.ProductResults
 import com.example.core.domain.usecase.AddedInLastSeenUseCase
 import com.example.core.domain.usecase.AddedInProductUseCase
@@ -28,125 +25,98 @@ class DetailViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(DetailState())
     val uiState: StateFlow<DetailState> = _uiState
-    private val mock = Product(
-        id = "MLB3647888693",
-        data = ProductResults(
-            title = "Café Torrado E Moído Extraforte 250g 3 Corações",
-            description = "descrição",
-            price = 16.82,
-            basePrice = 22.82,
-            thumbnail = "",
-            pictures = arrayListOf(
-                PicturesResponse(
-                    id = "604836-MLU75811690120_042024",
-                    url = "https://http2.mlstatic.com/D_604836-MLU75811690120_042024-I.jpg"
-                ),
-                PicturesResponse(
-                    id = "844581-MLU72748497151_112023",
-                    url = "https://http2.mlstatic.com/D_604836-MLU75811690120_042024-O.jpg"
-                ),
-                PicturesResponse(
-                    id = "866617-MLU75401258048_042024",
-                    url = "https://http2.mlstatic.com/D_866617-MLU75401258048_042024-O.jpg"
-                ),
-            ),
-        )
-    )
 
-    init {
-        viewModelScope.launch {
-            addedInLastSeen(mock)
+    fun initWithProduct(product: ProductResultsDetail) {
+        if (_uiState.value.productResults == null) {
+            viewModelScope.launch {
+                addedInLastSeen(product.toProductResults())
+            }
         }
     }
 
-    private suspend fun addedInLastSeen(product: Product) {
+    private suspend fun addedInLastSeen(productResults: ProductResults) {
         addedInLastSeenUseCase.invoke(
-            params = AddedInLastSeenUseCase.Params(product)
+            params = AddedInLastSeenUseCase.Params(productResults)
         ).collect {
-            _uiState.value = _uiState.value.copy(product = product)
-            isFavorite(product)
+            _uiState.value = _uiState.value.copy(productResults = productResults)
+            isFavorite(productResults)
         }
     }
 
-    private suspend fun isFavorite(product: Product) {
+    private suspend fun isFavorite(productResults: ProductResults) {
         isFavoriteUseCase.invoke(
             params = IsFavoriteUseCase.Params(
-                product
+                productResults
             )
         ).collectLatest {
             when (it) {
-                is ResultStatus.Success -> {
-                    val isFavorite = it.data
-                    _uiState.value = _uiState.value.copy(
-                        isFavorite = isFavorite,
-                        isNetworkError = false,
+                is ResultStatus.Success -> _uiState.value =
+                    _uiState.value.copy(
+                        isFavorite = it.data,
                         isSuccess = true,
                         isError = false,
                         isLoading = false
                     )
-                }
 
-                is ResultStatus.Failure -> {
+                is ResultStatus.Failure -> _uiState.value =
+                    _uiState.value.copy(isError = true, isLoading = false)
 
-                }
-
-                ResultStatus.Loading -> {
-
-                }
+                ResultStatus.Loading -> _uiState.value =
+                    _uiState.value.copy(isSuccess = false, isError = false, isLoading = true)
             }
         }
     }
 
     fun addInFavorite() {
         viewModelScope.launch {
-            uiState.value.product?.let {
+            uiState.value.productResults?.let {
                 if (uiState.value.isFavorite) deleteProductSeen(it)
                 else addInProductSeen(it)
             }
         }
     }
 
-    private suspend fun addInProductSeen(product: Product) {
-        addedInProductUseCase.invoke(params = AddedInProductUseCase.Params(product))
+    private suspend fun addInProductSeen(productResults: ProductResults) {
+        addedInProductUseCase.invoke(params = AddedInProductUseCase.Params(productResults))
             .collectLatest {
                 when (it) {
                     is ResultStatus.Success -> _uiState.value =
-                        _uiState.value.copy(isFavorite = true)
+                        _uiState.value.copy(isFavorite = true, isError = false, isLoading = false)
 
-                    is ResultStatus.Failure -> Log.d(
-                        "AddInProductSeenTag",
-                        "addInProductSeen: ${it.status} /n ${it.message}"
-                    )
+                    is ResultStatus.Failure -> _uiState.value =
+                        _uiState.value.copy(isError = true, isLoading = false)
 
-                    ResultStatus.Loading -> {}
+                    ResultStatus.Loading -> _uiState.value =
+                        _uiState.value.copy(isSuccess = false, isError = false, isLoading = true)
                 }
             }
     }
 
-    private suspend fun deleteProductSeen(product: Product) {
+    private suspend fun deleteProductSeen(productResults: ProductResults) {
         deleteProductUseCase.invoke(
             params = DeleteProductUseCase.Params(
-                product
+                productResults
             )
         ).collect {
             when (it) {
-                is ResultStatus.Success -> _uiState.value = _uiState.value.copy(isFavorite = false)
-                is ResultStatus.Failure -> Log.d(
-                    "DeleteProductSeenTag",
-                    "deleteProductSeen: ${it.status} /n ${it.message}"
-                )
+                is ResultStatus.Success -> _uiState.value =
+                    _uiState.value.copy(isFavorite = false, isError = false, isLoading = false)
 
-                ResultStatus.Loading -> {}
+                is ResultStatus.Failure -> _uiState.value =
+                    _uiState.value.copy(isFavorite = false, isError = true, isLoading = false)
+
+
+                ResultStatus.Loading -> _uiState.value =
+                    _uiState.value.copy(isSuccess = false, isError = false, isLoading = true)
             }
         }
     }
 }
 
 data class DetailState(
-    val product: Product? = null,
+    val productResults: ProductResults? = null,
     val isFavorite: Boolean = false,
-    val isNetworkError: Boolean = false,
+    val isLoading: Boolean = false,
     val isSuccess: Boolean = false,
     val isError: Boolean = false,
-    val isLoading: Boolean = false,
 )

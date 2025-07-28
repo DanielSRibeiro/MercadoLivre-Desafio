@@ -7,15 +7,20 @@ import androidx.room.PrimaryKey
 data class ProductEntity(
     @PrimaryKey(autoGenerate = false)
     val id: String,
-    val title: String,
-    val description: String,
-    val price: Double,
-    val basePrice: Double,
-    val thumbnail: String,
-    val pictures: List<PicturesEntity>
+    val name: String,
+    val pictures: List<PicturesEntity>,
+    val attribute: List<AttributeEntity>,
+    val keywords: String,
+    val total: Int,
+    val createdAt: Long = System.currentTimeMillis()
 )
 
 data class PicturesEntity(
     val id: String,
     val url: String,
+)
+
+data class AttributeEntity(
+    val name: String,
+    val valueName: String
 )

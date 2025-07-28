@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.mercadolivre.data.local.MlDatabase
 import com.example.mercadolivre.data.local.dao.MlDao
 import com.example.mercadolivre.util.Constants
+import com.example.mercadolivre.util.PreferenceHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +26,7 @@ object RoomModule {
     ).build()
 
     @Provides
-    fun provideMoviesDao(database: MlDatabase): MlDao {
+    fun provideMlDao(database: MlDatabase): MlDao {
         return database.mlDao()
     }
 }

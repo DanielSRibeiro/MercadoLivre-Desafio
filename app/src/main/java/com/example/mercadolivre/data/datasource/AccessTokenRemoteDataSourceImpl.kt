@@ -36,7 +36,7 @@ class AccessTokenRemoteDataSourceImpl @Inject constructor(
 
             return when (response.code()) {
                 401 -> ResultStatus.Failure(ErrorStates.Unauthorized, message)
-                else -> ResultStatus.Failure(ErrorStates.Fail, message)
+                else -> ResultStatus.Failure(ErrorStates.Exception, message)
             }
         }
     }

@@ -9,6 +9,8 @@ interface MLService {
 
     @GET("products/search")
     suspend fun searchProduct(
-        @Query("q") q: String
+        @Query("q") q: String,
+        @Query("limit") limit: Int,
+        @Query("offeset") offset: Int,
     ) : Response<SearchResponse>
 }

@@ -1,8 +1,8 @@
 package com.example.core.data.remote
 
-import com.example.core.domain.model.Product
-import com.example.core.domain.usecase.base.ResultStatus
+import androidx.paging.PagingSource
+import com.example.core.domain.model.ProductResults
 
 interface SearchRemoteRepository {
-    suspend fun searchProduct(q: String) : ResultStatus<String>
+    fun searchProduct(q: String) : PagingSource<Int, ProductResults>
 }

@@ -1,55 +1,85 @@
 package com.example.mercadolivre.data.local.entity.mapper
 
-import com.example.core.domain.model.PicturesResponse
-import com.example.core.domain.model.Product
+import com.example.core.domain.model.Attribute
+import com.example.core.domain.model.Picture
 import com.example.core.domain.model.ProductResults
+import com.example.mercadolivre.data.local.entity.AttributeEntity
 import com.example.mercadolivre.data.local.entity.LastSeenEntity
 import com.example.mercadolivre.data.local.entity.PicturesEntity
 import com.example.mercadolivre.data.local.entity.ProductEntity
 
-fun Product.toLastSeenEntity() = LastSeenEntity(
+fun ProductResults.toLastSeenEntity() = LastSeenEntity(
     id = this.id,
-    title = this.data.title,
-    description = this.data.description,
-    price = this.data.price,
-    basePrice = this.data.basePrice,
-    thumbnail = this.data.thumbnail,
-    pictures = this.data.pictures.map {
+    name = this.name,
+    pictures = this.pictures.map {
         PicturesEntity(
             id = it.id,
             url = it.url
         )
-    }
+    },
+    attribute = this.attribute.map {
+        AttributeEntity(
+            name = it.name,
+            valueName = it.valueName
+        )
+    },
+    keywords = this.keywords,
+    total = this.total
 )
 
-fun Product.toProductEntity() = ProductEntity(
+fun ProductResults.toProductEntity() = ProductEntity(
     id = this.id,
-    title = this.data.title,
-    description = this.data.description,
-    price = this.data.price,
-    basePrice = this.data.basePrice,
-    thumbnail = this.data.thumbnail,
-    pictures = this.data.pictures.map {
+    name = this.name,
+    pictures = this.pictures.map {
         PicturesEntity(
             id = it.id,
             url = it.url
         )
-    }
+    },
+    attribute = this.attribute.map {
+        AttributeEntity(
+            name = it.name,
+            valueName = it.valueName
+        )
+    },
+    keywords = this.keywords,
+    total = this.total
 )
 
-fun ProductEntity.toProductEntity() = Product(
+fun ProductEntity.toProductEntity() = ProductResults(
     id = this.id,
-    data = ProductResults(
-        title = this.title,
-        description = this.description,
-        price = this.price,
-        basePrice = this.basePrice,
-        thumbnail = this.thumbnail,
-        pictures = this.pictures.map {
-            PicturesResponse(
-                id = it.id,
-                url = it.url
-            )
-        }
-    ),
+    name = this.name,
+    pictures = this.pictures.map { picture ->
+        Picture(
+            id = picture.id,
+            url = picture.url
+        )
+    },
+    keywords = this.keywords,
+    total = this.total,
+    attribute = this.attribute.map { attribute ->
+        Attribute(
+            name = attribute.name,
+            valueName = attribute.valueName
+        )
+    },
+)
+
+fun LastSeenEntity.toProductResult() = ProductResults(
+    id = this.id,
+    name = this.name,
+    pictures = this.pictures.map { picture ->
+        Picture(
+            id = picture.id,
+            url = picture.url
+        )
+    },
+    keywords = this.keywords,
+    total = this.total,
+    attribute = this.attribute.map { attribute ->
+        Attribute(
+            name = attribute.name,
+            valueName = attribute.valueName
+        )
+    },
 )

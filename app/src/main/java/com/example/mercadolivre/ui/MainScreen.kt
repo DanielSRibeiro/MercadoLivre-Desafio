@@ -1,6 +1,8 @@
 package com.example.mercadolivre.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -18,11 +20,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.mercadolivre.R
 import com.example.mercadolivre.ui.components.commo.SearchComponent
 import com.example.mercadolivre.ui.navigation.NavigationGraph
 import com.example.mercadolivre.ui.navigation.Screens
+import com.example.mercadolivre.ui.theme.black
+import com.example.mercadolivre.ui.theme.yellow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +43,6 @@ fun MainScreen(
 
     val canNavigateBack = currentDestination != null && currentDestination != Screens.Home.route
     val showToolbar = currentDestination != null && currentDestination != Screens.Search.route
-
     Scaffold(
         topBar = {
             if (showToolbar) {
@@ -49,14 +55,14 @@ fun MainScreen(
                             IconButton(onClick = { navController.popBackStack() }) {
                                 Icon(
                                     imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = "Voltar"
+                                    contentDescription = stringResource(R.string.description_back),
+                                    tint = black
                                 )
                             }
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        titleContentColor = MaterialTheme.colorScheme.primary,
+                        containerColor = yellow,
                     )
                 )
             }
@@ -64,7 +70,12 @@ fun MainScreen(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(if(showToolbar) innerPadding else PaddingValues(0.dp))
+                .background(MaterialTheme.colorScheme.background)
+        ) {
             NavigationGraph(
                 navController = navController,
                 snackBarHostState = snackBarHostState

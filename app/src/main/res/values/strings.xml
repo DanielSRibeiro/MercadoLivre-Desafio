@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Mercado Livre</string>
+    <string name="label_search">Buscar produtos...</string>
+    <string name="description_back">Voltar</string>
+    <string name="label_recently_viewed">Vistos recentemente</string>
+    <string name="label_favorites">Favoritos</string>
+    <string name="label_favorite">Favorito</string>
+    <string name="error_network">Erro de conexão</string>
+    <string name="label_no_network">Sem conexão</string>
+    <string name="label_check_your_connection">Verifique sua conexão com a internet e tente novamente</string>
+    <string name="label_try_again">Tentar novamente</string>
+    <string name="error_default">Erro genérico</string>
+    <string name="label_something_went_wrong">Algo deu errado</string>
+    <string name="label_unable_to_load_data">Não foi possível carregar os dados.\n Tente novamente.</string>
+    <string name="label_empty_favorite_list">Lista de favoritos vazia</string>
+    <string name="label_no_favorite">Você ainda não adicionou nada aos favoritos</string>
+    <string name="label_empty_history_list">Histórico vazio.</string>
+    <string name="label_did_not_view_any_products">Você ainda não visualizou nenhum produto.</string>
+    <string name="label_explore_our_products">Explore nossos produtos para ver seu histórico aqui.</string>
+    <string name="label_explore_products">Explorar produtos</string>
+    <string name="description_search">Buscar</string>
+    <string name="label_delete_favorite">Removido dos favoritos</string>
+    <string name="label_add_favorite">Adicionado aos favoritos</string>
+
 </resources>

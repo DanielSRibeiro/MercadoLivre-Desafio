@@ -3,7 +3,7 @@ package com.example.mercadolivre.ui.screen.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.domain.ErrorStates
-import com.example.core.domain.model.Product
+import com.example.core.domain.model.ProductResults
 import com.example.core.domain.usecase.GetAccessTokenUseCase
 import com.example.core.domain.usecase.GetAllFavoritesUseCase
 import com.example.core.domain.usecase.GetLastSeenUseCase
@@ -31,6 +31,14 @@ class HomeViewModel @Inject constructor(
     val uiState: StateFlow<HomeState> = _uiState
 
     init {
+        loadHomeData()
+    }
+
+    fun retry() {
+        loadHomeData()
+    }
+
+    private fun loadHomeData() {
         viewModelScope.launch {
             val timeNow = Instant.now()
             val accessToken = getTokenUseCase.invoke()
@@ -43,8 +51,13 @@ class HomeViewModel @Inject constructor(
             ).collectLatest {
                 when (it) {
                     is ResultStatus.Success ->
-                        _uiState.value = _uiState.value.copy(lastSeenProducts = it.data)
-                    else -> {}
+                        _uiState.value = _uiState.value.copy(
+                            lastSeenProductData = it.data,
+                            isLoading = false,
+                        )
+                    else -> _uiState.value = _uiState.value.copy(
+                        lastSeenProductData = emptyList()
+                    )
                 }
             }
 
@@ -53,8 +66,13 @@ class HomeViewModel @Inject constructor(
             ).collectLatest {
                 when (it) {
                     is ResultStatus.Success ->
-                        _uiState.value = _uiState.value.copy(favoritesProducts = it.data)
-                    else -> {}
+                        _uiState.value = _uiState.value.copy(
+                            favoritesProductData = it.data,
+                            isLoading = false,
+                        )
+
+                    else -> _uiState.value =
+                        _uiState.value.copy(favoritesProductData = emptyList())
                 }
             }
         }
@@ -99,12 +117,3 @@ class HomeViewModel @Inject constructor(
         }
     }
 }
-
-data class HomeState(
-    val lastSeenProducts: List<Product> = emptyList(),
-    val favoritesProducts: List<Product> = emptyList(),
-    val isNetworkError: Boolean = false,
-    val isSuccess: Boolean = false,
-    val isError: Boolean = false,
-    val isLoading: Boolean = false,
-)

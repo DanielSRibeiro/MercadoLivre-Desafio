@@ -1,5 +1,6 @@
 package com.example.core.domain.usecase.base
 
+import androidx.paging.PagingData
 import com.example.core.domain.ErrorStates
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -22,4 +23,10 @@ abstract class UseCase<in P, out R> {
     }.flowOn(Dispatchers.IO)
 
     protected abstract suspend fun doWork(params: P): ResultStatus<R>
+}
+
+abstract class PagingUseCase<in P, R : Any> {
+    operator fun invoke(params: P): Flow<PagingData<R>> = createFlowObservable(params)
+
+    protected abstract fun createFlowObservable(params: P): Flow<PagingData<R>>
 }
