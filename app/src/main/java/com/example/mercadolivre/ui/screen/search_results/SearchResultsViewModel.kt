@@ -8,13 +8,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.core.domain.model.ProductResults
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.emptyFlow
 
 @HiltViewModel
 class SearchResultsViewModel @Inject constructor(
@@ -39,16 +35,7 @@ class SearchResultsViewModel @Inject constructor(
 
     private fun pagingConfig(): PagingConfig =
         PagingConfig(
-            pageSize = 20,
-            initialLoadSize = 20,
+            pageSize = 10,
+            enablePlaceholders = false,
         )
 }
-
-
-data class SearchResultsState(
-    val products: Flow<PagingData<ProductResults>> = emptyFlow(),
-    val isNetworkError: Boolean = false,
-    val isSuccess: Boolean = false,
-    val isError: Boolean = false,
-    val isLoading: Boolean = false,
-)

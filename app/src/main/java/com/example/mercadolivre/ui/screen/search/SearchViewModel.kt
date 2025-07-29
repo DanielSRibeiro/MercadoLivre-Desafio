@@ -1,12 +1,9 @@
 package com.example.mercadolivre.ui.screen.search
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mercadolivre.util.PreferenceHelper.getStringList
-import com.example.mercadolivre.util.PreferenceHelper.saveStringList
+import com.example.core.data.local.PreferenceDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -14,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val preference: PreferenceDataSource,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchState())
@@ -22,7 +19,7 @@ class SearchViewModel @Inject constructor(
 
     init {
         _uiState.value =
-            _uiState.value.copy(researchHistory = getStringList(context))
+            _uiState.value.copy(researchHistory = preference.getStringList())
     }
 
     fun event(query: String) {
@@ -32,14 +29,11 @@ class SearchViewModel @Inject constructor(
     fun saveQuery() {
         viewModelScope.launch {
             val query = _uiState.value.query
-            val newList = listOf(query) + _uiState.value.researchHistory
-            _uiState.value = _uiState.value.copy(researchHistory = newList)
-            saveStringList(context = context, list = newList)
+            if(query.isNotBlank()){
+                val newList = listOf(query) + _uiState.value.researchHistory
+                _uiState.value = _uiState.value.copy(researchHistory = newList)
+                preference.saveStringList(list = newList)
+            }
         }
     }
 }
-
-data class SearchState(
-    val query: String = "",
-    val researchHistory: List<String> = emptyList(),
-)

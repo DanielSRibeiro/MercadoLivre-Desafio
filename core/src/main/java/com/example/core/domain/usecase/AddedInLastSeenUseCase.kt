@@ -17,6 +17,9 @@ class AddedInLastSeenUseCaseImpl @Inject constructor(
 ) : UseCase<AddedInLastSeenUseCase.Params, Unit>(), AddedInLastSeenUseCase {
 
     override suspend fun doWork(params: AddedInLastSeenUseCase.Params): ResultStatus<Unit> {
+        if(lastSeenRepository.getLastSeen().size > 3) {
+            lastSeenRepository.deleteLastItem()
+        }
         val added = lastSeenRepository.addedInLastSeen(params.productResults)
         return ResultStatus.Success(added)
     }

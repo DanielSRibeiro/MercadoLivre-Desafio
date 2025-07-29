@@ -24,8 +24,8 @@ import com.example.core.domain.model.Picture
 import com.example.core.domain.model.ProductResults
 import com.example.mercadolivre.R
 import com.example.mercadolivre.ui.components.commo.AsyncImageUrl
-import com.example.mercadolivre.ui.screen.detail.ProductResultsDetail
-import com.example.mercadolivre.ui.screen.detail.toProductResultsDetail
+import com.example.mercadolivre.ui.screen.detail.model.ProductResultsDetail
+import com.example.mercadolivre.ui.screen.detail.model.toProductResultsDetail
 
 @Composable
 fun CardProducts(

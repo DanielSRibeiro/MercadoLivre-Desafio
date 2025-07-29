@@ -32,7 +32,11 @@ fun SearchBarComponent(
             SearchBarDefaults.InputField(
                 query = query,
                 onQueryChange = onQueryChange,
-                onSearch = { onSearch(query) },
+                onSearch = {
+                    if (query.length > 1) {
+                        onSearch(query)
+                    }
+                },
                 expanded = expanded,
                 onExpandedChange = {},
                 placeholder = { Text(text = stringResource(R.string.label_search)) },
@@ -45,7 +49,11 @@ fun SearchBarComponent(
                     }
                 },
                 trailingIcon = {
-                    IconButton(onClick = { onSearch(query) }) {
+                    IconButton(onClick = {
+                        if (query.length > 1) {
+                            onSearch(query)
+                        }
+                    }) {
                         Icon(
                             Icons.Default.Search,
                             contentDescription = stringResource(R.string.description_search)

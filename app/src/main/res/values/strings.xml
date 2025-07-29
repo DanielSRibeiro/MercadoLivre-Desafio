@@ -21,5 +21,7 @@
     <string name="description_search">Buscar</string>
     <string name="label_delete_favorite">Removido dos favoritos</string>
     <string name="label_add_favorite">Adicionado aos favoritos</string>
+    <string name="title_try_another_search">Nenhum resultado encontrado</string>
+    <string name="label_try_another_search">Tente usar outras palavras-chave.</string>
 
 </resources>

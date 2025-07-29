@@ -16,7 +16,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.example.mercadolivre.ui.screen.search.SearchScreen
 import com.example.mercadolivre.ui.screen.detail.DetailScreen
 import com.example.mercadolivre.ui.screen.detail.DetailViewModel
-import com.example.mercadolivre.ui.screen.detail.ProductResultsDetail
+import com.example.mercadolivre.ui.screen.detail.model.ProductResultsDetail
 import com.example.mercadolivre.ui.screen.search.SearchViewModel
 import com.example.mercadolivre.ui.screen.search_results.SearchResultsScreen
 import com.example.mercadolivre.ui.screen.search_results.SearchResultsViewModel
@@ -74,7 +74,7 @@ fun NavigationGraph(
                 onSearch = {
                     saveQuery()
                     navController.navigate(Screens.SearchResults.passQuery(it)) {
-                        popUpTo(Screens.SearchResults.route) {
+                        popUpTo(Screens.Search.route) {
                             inclusive = true
                         }
                     }

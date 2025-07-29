@@ -12,6 +12,7 @@ kotlin {
     }
 }
 dependencies {
+    testImplementation(project(":testing"))
 
     //Retrofit and Gson
     api(libs.retrofit)

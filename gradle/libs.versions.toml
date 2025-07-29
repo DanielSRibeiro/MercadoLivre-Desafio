@@ -26,6 +26,9 @@ roomRuntime = "2.7.2"
 roomCompiler = "2.7.2"
 securityCrypto = "1.1.0-alpha06"
 firebaseCrashlyticsBuildtools = "3.0.5"
+kotlinxCoroutinesTest = "1.9.0"
+mockitoCore = "3.12.4"
+mockitoKotlin = "2.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,7 +68,9 @@ androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", versi
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "pagingRuntimeKtx" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
-
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+mockito-kotlin = { module = "com.nhaarman.mockitokotlin2:mockito-kotlin", version.ref = "mockitoKotlin" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

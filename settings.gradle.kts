@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Mercado Livre"
 include(":app")
 include(":core")
+include(":testing")

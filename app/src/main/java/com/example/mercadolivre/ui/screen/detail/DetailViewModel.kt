@@ -7,11 +7,12 @@ import com.example.core.domain.usecase.AddedInLastSeenUseCase
 import com.example.core.domain.usecase.AddedInProductUseCase
 import com.example.core.domain.usecase.DeleteProductUseCase
 import com.example.core.domain.usecase.IsFavoriteUseCase
-import com.example.core.domain.usecase.base.ResultStatus
+import com.example.mercadolivre.ui.screen.detail.model.DetailState
+import com.example.mercadolivre.ui.screen.detail.model.ProductResultsDetail
+import com.example.mercadolivre.ui.screen.detail.model.toProductResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -48,22 +49,8 @@ class DetailViewModel @Inject constructor(
             params = IsFavoriteUseCase.Params(
                 productResults
             )
-        ).collectLatest {
-            when (it) {
-                is ResultStatus.Success -> _uiState.value =
-                    _uiState.value.copy(
-                        isFavorite = it.data,
-                        isSuccess = true,
-                        isError = false,
-                        isLoading = false
-                    )
-
-                is ResultStatus.Failure -> _uiState.value =
-                    _uiState.value.copy(isError = true, isLoading = false)
-
-                ResultStatus.Loading -> _uiState.value =
-                    _uiState.value.copy(isSuccess = false, isError = false, isLoading = true)
-            }
+        ).collect { isFavorite ->
+            _uiState.value = _uiState.value.copy(isFavorite = isFavorite)
         }
     }
 
@@ -77,19 +64,11 @@ class DetailViewModel @Inject constructor(
     }
 
     private suspend fun addInProductSeen(productResults: ProductResults) {
-        addedInProductUseCase.invoke(params = AddedInProductUseCase.Params(productResults))
-            .collectLatest {
-                when (it) {
-                    is ResultStatus.Success -> _uiState.value =
-                        _uiState.value.copy(isFavorite = true, isError = false, isLoading = false)
-
-                    is ResultStatus.Failure -> _uiState.value =
-                        _uiState.value.copy(isError = true, isLoading = false)
-
-                    ResultStatus.Loading -> _uiState.value =
-                        _uiState.value.copy(isSuccess = false, isError = false, isLoading = true)
-                }
-            }
+        addedInProductUseCase.invoke(
+            params = AddedInProductUseCase.Params(productResults)
+        ).collect {
+            _uiState.value = _uiState.value.copy(isFavorite = true)
+        }
     }
 
     private suspend fun deleteProductSeen(productResults: ProductResults) {
@@ -98,25 +77,7 @@ class DetailViewModel @Inject constructor(
                 productResults
             )
         ).collect {
-            when (it) {
-                is ResultStatus.Success -> _uiState.value =
-                    _uiState.value.copy(isFavorite = false, isError = false, isLoading = false)
-
-                is ResultStatus.Failure -> _uiState.value =
-                    _uiState.value.copy(isFavorite = false, isError = true, isLoading = false)
-
-
-                ResultStatus.Loading -> _uiState.value =
-                    _uiState.value.copy(isSuccess = false, isError = false, isLoading = true)
-            }
+            _uiState.value = _uiState.value.copy(isFavorite = false)
         }
     }
 }
-
-data class DetailState(
-    val productResults: ProductResults? = null,
-    val isFavorite: Boolean = false,
-    val isLoading: Boolean = false,
-    val isSuccess: Boolean = false,
-    val isError: Boolean = false,
-)

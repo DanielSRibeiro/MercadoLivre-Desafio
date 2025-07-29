@@ -30,9 +30,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.mercadolivre.ui.components.commo.AsyncImageUrl
 import com.example.mercadolivre.ui.components.commo.LoadingView
 import com.example.mercadolivre.ui.navigation.Screens
-import com.example.mercadolivre.ui.screen.detail.toProductResultsDetail
+import com.example.mercadolivre.ui.screen.detail.model.toProductResultsDetail
 import com.example.mercadolivre.util.Constants.DETAIL_ARGUMENT_KEY
 import com.example.mercadolivre.ui.components.commo.DefaultError
+import com.example.mercadolivre.ui.components.commo.EmptyScreen
 import com.example.mercadolivre.ui.components.commo.ErrorNetworkScreen
 import java.net.UnknownHostException
 
@@ -57,12 +58,19 @@ fun SearchResultsScreen(
         }
 
         is LoadState.NotLoading -> {
+
+            if(paging.itemCount < 1){
+                EmptyScreen()
+                return
+            }
+
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(PaddingValues(24.dp))
             ) {
+
                 items(paging.itemCount) { index ->
                     paging[index]?.let {
                         Card(

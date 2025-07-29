@@ -2,23 +2,25 @@ package com.example.core.domain.usecase
 
 import com.example.core.data.local.FavoriteRepository
 import com.example.core.domain.model.ProductResults
-import com.example.core.domain.usecase.base.ResultStatus
-import com.example.core.domain.usecase.base.UseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 interface IsFavoriteUseCase {
-    operator fun invoke(params: Params): Flow<ResultStatus<Boolean>>
+    suspend operator fun invoke(params: Params): Flow<Boolean>
     data class Params(val productResults: ProductResults)
 }
 
 class IsFavoriteUseCaseImpl @Inject constructor(
     private val repository: FavoriteRepository
-) : UseCase<IsFavoriteUseCase.Params, Boolean>(), IsFavoriteUseCase {
+) : IsFavoriteUseCase {
 
-    override suspend fun doWork(params: IsFavoriteUseCase.Params): ResultStatus<Boolean> {
+    override suspend fun invoke(params: IsFavoriteUseCase.Params): Flow<Boolean> {
         val result = repository.isFavorite(params.productResults.id)
-        return ResultStatus.Success(result != null)
+        return flow {
+            emit(result != null)
+        }.flowOn(Dispatchers.IO)
     }
-
 }
